@@ -45,6 +45,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+   [[NSNotificationCenter defaultCenter] addObserver:self
+                                            selector:@selector(handleMPMoviePlayerPlaybackDidFinishNotification:)
+                                            name:MPMoviePlayerPlaybackDidFinishNotification
+                                            object:nil];
+    
+    
 	[self setupMyView];
 	self.visitManager = [FYXVisitManager new];
     self.visitManager.delegate = self;
@@ -98,11 +105,10 @@
 
 - (void)playButtonTapped
 {
-	
-//	NSString *movieName = @"movie-mission1";
-//	NSURL *urlToLoad = [[NSBundle mainBundle] URLForResource:movieName withExtension:@"m4v"];
-//	self.movieURL = urlToLoad;
-//	[self playMovie];
+    NSString *movieName = @"movie-mission2";
+	NSURL *urlToLoad = [[NSBundle mainBundle] URLForResource:movieName withExtension:@"m4v"];
+	self.movieURL = urlToLoad;
+	[self playMovie];
 }
 
 #pragma mark - Mission One button
@@ -174,11 +180,25 @@
 
 - (void)missionTwoButtonTapped
 {
-	NSLog(@"Look for Mission Two beacon");
+	//show movie for mission 2
+    
+    NSLog(@"Look for Mission Two beacon");
 	self.currentMissionBeaconName = @"Mission2";
+    self.movieURL = [[NSBundle mainBundle] URLForResource:@"movie-mission2" withExtension:@"m4v"];
+    [self playMovie];
+}
+
+- (void)startMission2
+{
 	NSString *text = [NSString stringWithFormat:@"You have %d seconds to find George Clooney. Hurry! Go!", MISSION_TWO_TIME];
 	[self sayIt:text];
 	[self startTimer];
+}
+
+- (void)playMission1Video
+{
+    self.movieURL = [[NSBundle mainBundle] URLForResource:@"movie-mission1" withExtension:@"m4v"];
+    [self playMovie];
 }
 
 #pragma mark - Share button
@@ -227,7 +247,7 @@
 
 - (void)startRadarAudio
 {
-    NSURL *url = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/beep_end.mp3", [[NSBundle mainBundle] resourcePath]]];
+    NSURL *url = [[NSBundle mainBundle] URLForResource:@"beep_end" withExtension:@"mp3"];
 	
 	NSError *error;
     self.radarAudioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
@@ -267,35 +287,28 @@
 
 #pragma mark - Movie
 
-- (MPMoviePlayerViewController *)moviePlayerViewController
-{
-	if (_moviePlayerViewController != nil) {
-		_moviePlayerViewController = nil;
-	}
-
-	MPMoviePlayerViewController *playerVC = [[MPMoviePlayerViewController alloc] initWithContentURL:self.movieURL];
-	[playerVC.moviePlayer prepareToPlay];
-	playerVC.view.frame = self.view.bounds;
-	playerVC.moviePlayer.shouldAutoplay = YES;
-	playerVC.moviePlayer.repeatMode = MPMovieRepeatModeOne;
-	playerVC.moviePlayer.controlStyle = MPMovieControlStyleNone;
-	playerVC.moviePlayer.scalingMode = MPMovieScalingModeAspectFill;
-	playerVC.view.backgroundColor = [UIColor orangeColor];
-	_moviePlayerViewController = playerVC;
-	return _moviePlayerViewController;
-}
-
-- (void)setupMovie
-{
-	[self.view addSubview:_moviePlayerViewController.view];
-	[self.view bringSubviewToFront:_moviePlayerViewController.view];
-}
+//- (void)setupMovie
+//{
+//	[self.view addSubview:_moviePlayerViewController.view];
+//	[self.view bringSubviewToFront:_moviePlayerViewController.view];
+//}
 
 - (void)playMovie
 {
+    self.moviePlayerViewController = [[MPMoviePlayerViewController alloc] initWithContentURL:self.movieURL];
+	[self.moviePlayerViewController.moviePlayer prepareToPlay];
+	self.moviePlayerViewController.view.frame = self.view.bounds;
+	self.moviePlayerViewController.moviePlayer.shouldAutoplay = YES;
+	self.moviePlayerViewController.moviePlayer.repeatMode = MPMovieRepeatModeNone;
+	self.moviePlayerViewController.moviePlayer.controlStyle = MPMovieControlStyleNone;
+    
 	if (self.moviePlayerViewController.moviePlayer.playbackState != MPMoviePlaybackStatePlaying) {
-		[self.view bringSubviewToFront:_moviePlayerViewController.view];
-		[_moviePlayerViewController.moviePlayer play];
+        
+        [self presentViewController:self.moviePlayerViewController animated:NO completion:nil];
+        
+        //[self.view addSubview:_moviePlayerViewController.view];
+        //[self.view bringSubviewToFront:_moviePlayerViewController.view];
+		//[_moviePlayerViewController.moviePlayer play];
 	}
 }
 
@@ -306,9 +319,15 @@
 
 - (void)handleMPMoviePlayerPlaybackDidFinishNotification:(NSNotification *)notification
 {
-	_moviePlayerViewController = nil;
-	[self dismissViewControllerAnimated:YES completion:nil];
+	[self.moviePlayerViewController dismissViewControllerAnimated:NO completion:^{
+        
+        if ([self.currentMissionBeaconName isEqualToString:@"Mission2"]) {
+            
+            [self startMission2];
+        }
+    }];
 }
+
 
 #pragma mark - Gimbal
 
@@ -334,6 +353,8 @@
 			[self sayIt:@"Super, you have located the satellite."];
 			[self resetTimer];
 			[self resetMission];
+            
+            [self performSelector:@selector(playMission1Video) withObject:nil afterDelay:2.5];
 		}
 	} else if ([self.currentMissionBeaconName isEqualToString:@"Mission2"]
                && [visit.transmitter.name isEqualToString:@"Mission2"]) {
