@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		601C287518C32D3000C7A89D /* HPLMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 601C287418C32D3000C7A89D /* HPLMainViewController.m */; };
+		601C287818C32ED600C7A89D /* main_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 601C287718C32ED600C7A89D /* main_background.png */; };
 		60D3D93518C2C17E0064CB69 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60D3D93418C2C17E0064CB69 /* Foundation.framework */; };
 		60D3D93718C2C17E0064CB69 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60D3D93618C2C17E0064CB69 /* CoreGraphics.framework */; };
 		60D3D93918C2C17E0064CB69 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60D3D93818C2C17E0064CB69 /* UIKit.framework */; };
@@ -48,6 +50,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		601C287318C32D3000C7A89D /* HPLMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPLMainViewController.h; sourceTree = "<group>"; };
+		601C287418C32D3000C7A89D /* HPLMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPLMainViewController.m; sourceTree = "<group>"; };
+		601C287718C32ED600C7A89D /* main_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_background.png; sourceTree = "<group>"; };
 		60D3D93118C2C17E0064CB69 /* hoopla.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = hoopla.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		60D3D93418C2C17E0064CB69 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		60D3D93618C2C17E0064CB69 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -119,6 +124,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		601C287618C32ED600C7A89D /* images */ = {
+			isa = PBXGroup;
+			children = (
+				601C287718C32ED600C7A89D /* main_background.png */,
+			);
+			path = images;
+			sourceTree = "<group>";
+		};
 		60D3D92818C2C17E0064CB69 = {
 			isa = PBXGroup;
 			children = (
@@ -158,12 +171,15 @@
 		60D3D93A18C2C17E0064CB69 /* hoopla */ = {
 			isa = PBXGroup;
 			children = (
+				601C287618C32ED600C7A89D /* images */,
 				60D3D9B118C326280064CB69 /* 3rdParty */,
 				60D3D94318C2C17E0064CB69 /* HPLAppDelegate.h */,
 				60D3D94418C2C17E0064CB69 /* HPLAppDelegate.m */,
 				60D3D94618C2C17E0064CB69 /* Main.storyboard */,
 				60D3D94918C2C17E0064CB69 /* HPLViewController.h */,
 				60D3D94A18C2C17E0064CB69 /* HPLViewController.m */,
+				601C287318C32D3000C7A89D /* HPLMainViewController.h */,
+				601C287418C32D3000C7A89D /* HPLMainViewController.m */,
 				60D3D94C18C2C17E0064CB69 /* Images.xcassets */,
 				60D3D93B18C2C17E0064CB69 /* Supporting Files */,
 			);
@@ -381,6 +397,7 @@
 			files = (
 				60D3D94D18C2C17E0064CB69 /* Images.xcassets in Resources */,
 				60D3D93F18C2C17E0064CB69 /* InfoPlist.strings in Resources */,
+				601C287818C32ED600C7A89D /* main_background.png in Resources */,
 				60D3D94818C2C17E0064CB69 /* Main.storyboard in Resources */,
 				60D3D9C818C326280064CB69 /* DataModels.bundle in Resources */,
 				60D3D9CA18C326280064CB69 /* rules.txt in Resources */,
@@ -404,6 +421,7 @@
 			files = (
 				60D3D94B18C2C17E0064CB69 /* HPLViewController.m in Sources */,
 				60D3D94118C2C17E0064CB69 /* main.m in Sources */,
+				601C287518C32D3000C7A89D /* HPLMainViewController.m in Sources */,
 				60D3D94518C2C17E0064CB69 /* HPLAppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

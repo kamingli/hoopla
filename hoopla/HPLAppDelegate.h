@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "HPLMainViewController.h"
 #import <FYX/FYX.h>
 #import <FYX/FYXVisitManager.h>
 #import <FYX/FYXTransmitter.h>
@@ -14,6 +15,8 @@
 @interface HPLAppDelegate : UIResponder <UIApplicationDelegate, FYXServiceDelegate, FYXVisitDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+@property (strong, nonatomic) UINavigationController *nav;
+@property (strong, nonatomic) HPLMainViewController *mainViewController;
 @property (nonatomic) FYXVisitManager *visitManager;
 
 @end

@@ -14,16 +14,41 @@
 
 @implementation HPLViewController
 
+@synthesize backgroundImageView = _backgroundImageView;
+
+- (void)loadView
+{
+	self.view = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+	[self.view addSubview:self.backgroundImageView];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)setBackgroundImage:(UIImage *)img
+{
+	if (img != self.backgroundImageView.image) {
+		self.backgroundImageView.image = img;
+		[self.view sendSubviewToBack:self.backgroundImageView];
+		[self.view setNeedsDisplay];
+	}
+}
+
+- (UIImageView *)backgroundImageView
+{
+	if (_backgroundImageView == nil) {
+		_backgroundImageView = [[UIImageView alloc] initWithImage:nil];
+		_backgroundImageView.frame = self.view.bounds;
+	}
+	return _backgroundImageView;
 }
 
 @end

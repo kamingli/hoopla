@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface HPLViewController : UIViewController
-
+@property (nonatomic, strong, readonly) UIImageView *backgroundImageView;
+- (void)setBackgroundImage:(UIImage *)img; // background image
 @end

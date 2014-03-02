@@ -18,6 +18,13 @@
 	
 	[FYX startService:self];
     
+	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	self.mainViewController = [[HPLMainViewController alloc] initWithNibName:nil bundle:nil];
+	self.nav = [[UINavigationController alloc] initWithRootViewController:self.mainViewController];
+	self.nav.navigationBarHidden = YES;
+	self.window.rootViewController = self.nav;
+    [self.window makeKeyAndVisible];
+	
 	return YES;
 }
 							
