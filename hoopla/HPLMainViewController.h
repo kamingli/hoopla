@@ -11,7 +11,7 @@
 #import <FYX/FYXVisitManager.h>
 #import <FYX/FYXTransmitter.h>
 
-@interface HPLMainViewController : HPLViewController <FYXVisitDelegate>
+@interface HPLMainViewController : HPLViewController <FYXVisitDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 @property (nonatomic, strong, readonly) UIButton *playButton;
 @property (nonatomic, strong, readonly) UIButton *missionOneButton;
 @property (nonatomic, strong, readonly) UIButton *missionTwoButton;

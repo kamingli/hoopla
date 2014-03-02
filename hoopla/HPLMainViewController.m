@@ -20,6 +20,11 @@
 @property (nonatomic, assign) NSInteger remainingSeconds;
 @property (nonatomic, strong) AVAudioPlayer *radarAudioPlayer;
 
+@property (nonatomic, strong) UIImageView *selfieBackgroundImageView;
+@property (nonatomic, strong) UIImageView *selfieImageView;
+@property (nonatomic, strong) UIImage *lastSelfie;
+@property (nonatomic, strong) UIImage *lastSnapshotImage;
+@property (nonatomic, strong) UIView *viewWithCompositeSelfie;
 @end
 
 @implementation HPLMainViewController
@@ -230,18 +235,7 @@
 
 - (void)shareButtonTapped
 {
-	UIImage *postImage = [UIImage imageNamed:@"selfie.png"];
-	NSString *postText = @"Play to earn points to exchange for goodies from your favorite brands! #HooplaTeam at SF Beacon Hack! #BRINGITSF  ";
-	
-    NSArray *activityItems = @[postText, postImage];
-	
-    UIActivityViewController *activityController =
-	[[UIActivityViewController alloc]
-	 initWithActivityItems:activityItems
-	 applicationActivities:nil];
-	
-    [self presentViewController:activityController
-					   animated:YES completion:nil];
+	[self takePhoto];
 }
 
 #pragma mark - Audio
@@ -434,6 +428,53 @@
 - (void)resetMission
 {
 	self.currentMissionBeaconName = @"";
+}
+
+- (void)takePhoto
+{
+	UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+	picker.delegate = self;
+	picker.allowsEditing = YES;
+	picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+	picker.navigationBarHidden = NO;
+	picker.cameraDevice = UIImagePickerControllerCameraDeviceFront;
+	picker.view.contentMode = UIViewContentModeScaleAspectFill;
+	picker.cameraOverlayView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"selfie-long.png"]];
+	[self presentViewController:picker animated:YES completion:NULL];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
+    self.lastSelfie = [UIImage imageWithCGImage:chosenImage.CGImage scale:2.0f orientation:UIImageOrientationUpMirrored];
+	self.selfieImageView = [[UIImageView alloc] initWithImage:self.lastSelfie];
+	//self.selfieImageView.contentMode = UIViewContentModeScaleAspectFit;
+	self.selfieBackgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"selfie-long.png"]];
+	//self.selfieBackgroundImageView.contentMode = UIViewContentModeScaleAspectFit;
+	UIView *tempView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.bounds.size.width, 470.0f)];
+	[tempView addSubview:self.selfieImageView];
+	[tempView addSubview:self.selfieBackgroundImageView];
+	self.selfieImageView.center = CGPointMake(tempView.bounds.size.width/2.0f, tempView.bounds.size.height/2);
+	self.selfieBackgroundImageView.center = CGPointMake(tempView.bounds.size.width/2.0f, tempView.bounds.size.height/2);
+	[self snapshot:tempView];
+	
+    [picker dismissViewControllerAnimated:YES completion:^{
+		
+		UIImage *postImage = self.lastSnapshotImage;
+		NSString *postText = @"Play to earn points to exchange for goodies from your favorite brands! #HooplaTeam at SF Beacon Hack! #BRINGITSF  ";
+		NSArray *activityItems = @[postText, postImage];
+		UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
+		[self presentViewController:activityController animated:YES completion:nil];
+	}];
+}
+
+- (void)snapshot:(UIView *)vw
+{
+	UIGraphicsBeginImageContext(vw.frame.size);
+	[vw drawViewHierarchyInRect:vw.frame afterScreenUpdates:YES];
+	self.lastSnapshotImage = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+	//...code to save to photo album omitted for brevity
 }
 
 @end
