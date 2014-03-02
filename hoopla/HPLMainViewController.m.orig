@@ -181,6 +181,27 @@
 	[self startTimer];
 }
 
+<<<<<<< HEAD
+#pragma mark - Audio
+
+- (void)startRadarAudio
+{
+    NSURL *url = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/beep_end.mp3", [[NSBundle mainBundle] resourcePath]]];
+	
+	NSError *error;
+    self.radarAudioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+    self.radarAudioPlayer.enableRate = YES;
+	self.radarAudioPlayer.numberOfLoops = -1;
+    self.radarAudioPlayer.rate=0.2;
+    self.radarAudioPlayer.volume=0.1;
+	[self.radarAudioPlayer play];
+}
+
+- (void)stopRadarAudio
+{
+    [self.radarAudioPlayer stop];
+    self.radarAudioPlayer=nil;
+=======
 #pragma mark - Share button
 
 - (void)addShareButton
@@ -221,27 +242,7 @@
 	
     [self presentViewController:activityController
 					   animated:YES completion:nil];
-}
-
-#pragma mark - Audio
-
-- (void)startRadarAudio
-{
-    NSURL *url = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/beep_end.mp3", [[NSBundle mainBundle] resourcePath]]];
-	
-	NSError *error;
-    self.radarAudioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
-    self.radarAudioPlayer.enableRate = YES;
-	self.radarAudioPlayer.numberOfLoops = -1;
-    self.radarAudioPlayer.rate=0.2;
-    self.radarAudioPlayer.volume=0.1;
-	[self.radarAudioPlayer play];
-}
-
-- (void)stopRadarAudio
-{
-    [self.radarAudioPlayer stop];
-    self.radarAudioPlayer=nil;
+>>>>>>> FETCH_HEAD
 }
 
 #pragma mark - Movie
