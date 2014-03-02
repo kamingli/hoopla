@@ -233,15 +233,36 @@
     self.radarAudioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
     self.radarAudioPlayer.enableRate = YES;
 	self.radarAudioPlayer.numberOfLoops = -1;
-    self.radarAudioPlayer.rate=0.2;
-    self.radarAudioPlayer.volume=0.1;
+    [self setRateAndVolume:0.2 volume:1.0];
 	[self.radarAudioPlayer play];
 }
 
 - (void)stopRadarAudio
 {
     [self.radarAudioPlayer stop];
-    self.radarAudioPlayer=nil;
+    [self setRateAndVolume:0.2 volume:1.0];
+}
+
+- (void)setRateAndVolume:(float)rate volume:(float)volume
+{
+    if (self.radarAudioPlayer.rate==rate)
+    {
+        NSLog(@"Rate is the same");
+        return;
+    }
+    
+    self.radarAudioPlayer.rate=rate;
+    self.radarAudioPlayer.volume=0.8;
+}
+
+- (void)updateRateAndVolume:(NSNumber *)RSSI
+{
+    if (RSSI.floatValue >= -60.0f)
+        [self setRateAndVolume:2.0 volume:1.0];
+    else if (RSSI.floatValue >= -75.0f && RSSI.floatValue < -60.0f)
+        [self setRateAndVolume:1.0 volume:1.0];
+    else if (RSSI.floatValue < -75.0f)
+        [self setRateAndVolume:0.2 volume:1.0];
 }
 
 #pragma mark - Movie
@@ -297,21 +318,25 @@
 	NSLog(@"I arrived at a Gimbal Beacon!!! %@", visit.transmitter.name);
 }
 
-- (void)receivedSighting:(FYXVisit *)visit updateTime:(NSDate *)updateTime RSSI:(NSNumber *)RSSI;
+- (void)receivedSighting:(FYXVisit *)visit updateTime:(NSDate *)updateTime RSSI:(NSNumber *)RSSI
 {
 	// this will be invoked when an authorized transmitter is sighted during an on-going visit
 	NSLog(@"I received a sighting!!! %@", visit.transmitter.name);
 	NSLog(@"Beacon name:%@", visit.transmitter.name);
 	NSLog(@"RSSI: %f", RSSI.floatValue);
 	NSLog(@"update time: %@", updateTime);
-	
-	if ([self.currentMissionBeaconName isEqualToString:@"Mission1"]) {
+    
+	if ([self.currentMissionBeaconName isEqualToString:@"Mission1"]){
+        [self updateRateAndVolume:RSSI];
+        
 		if (RSSI.floatValue >= -55.0f) {
 			[self sayIt:@"Super, you have located the satellite."];
 			[self resetTimer];
 			[self resetMission];
 		}
 	} else if ([self.currentMissionBeaconName isEqualToString:@"Mission2"]) {
+        [self updateRateAndVolume:RSSI];
+        
 		if (RSSI.floatValue >= -55.0f) {
 			[self sayIt:@"Fantastic, you have found George Clooney!"];
 			[self resetTimer];
