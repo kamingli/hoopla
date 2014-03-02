@@ -15,5 +15,6 @@
 @property (nonatomic, strong, readonly) UIButton *playButton;
 @property (nonatomic, strong, readonly) UIButton *missionOneButton;
 @property (nonatomic, strong, readonly) UIButton *missionTwoButton;
+@property (nonatomic, strong, readonly) UIButton *shareButton;
 @property (nonatomic) FYXVisitManager *visitManager;
 @end

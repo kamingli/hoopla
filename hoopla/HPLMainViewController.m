@@ -29,6 +29,7 @@
 @synthesize missionOneButton = _missionOneButton;
 @synthesize missionTwoButton = _missionTwoButton;
 @synthesize moviePlayerViewController = _moviePlayerViewController	;
+@synthesize shareButton = _shareButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -60,9 +61,11 @@
 	//[self addPlayButton];
 	[self addMissionOneButton];
 	[self addMissionTwoButton];
+	[self addShareButton];
 	[self.playButton addTarget:self action:@selector(playButtonTapped) forControlEvents:UIControlEventTouchUpInside];
 	[self.missionOneButton addTarget:self action:@selector(missionOneButtonTapped) forControlEvents:UIControlEventTouchUpInside];
 	[self.missionTwoButton addTarget:self action:@selector(missionTwoButtonTapped) forControlEvents:UIControlEventTouchUpInside];
+	[self.shareButton addTarget:self action:@selector(shareButtonTapped) forControlEvents:UIControlEventTouchUpInside];
 }
 
 #pragma mark - Play button
@@ -174,6 +177,48 @@
 	NSString *text = [NSString stringWithFormat:@"You have %d seconds to find George Clooney. Hurry! Go!", MISSION_TWO_TIME];
 	[self sayIt:text];
 	[self startTimer];
+}
+
+#pragma mark - Share button
+
+- (void)addShareButton
+{
+	[self.view addSubview:self.shareButton];
+}
+
+- (UIButton *)shareButton
+{
+	if (_shareButton == nil) {
+		
+		UIButton *btn;
+		
+		btn = [UIButton buttonWithType:UIButtonTypeCustom];
+		btn.frame = CGRectMake(0.0f, 0.0f, 240.0f, 50.0f);
+		btn.center = CGPointMake(160.0f, 520.0f);
+		btn.backgroundColor = [UIColor blackColor];
+		[btn setTitle:@"Share" forState:UIControlStateNormal];
+		[btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+		btn.titleLabel.font = [UIFont systemFontOfSize:20.0f];
+		
+		_shareButton = btn;
+	}
+	return _shareButton;
+}
+
+- (void)shareButtonTapped
+{
+	UIImage *postImage = [UIImage imageNamed:@"selfie.png"];
+	NSString *postText = @"Play to earn points to exchange for goodies from your favorite brands! #HooplaTeam at SF Beacon Hack! #BRINGITSF  ";
+	
+    NSArray *activityItems = @[postText, postImage];
+	
+    UIActivityViewController *activityController =
+	[[UIActivityViewController alloc]
+	 initWithActivityItems:activityItems
+	 applicationActivities:nil];
+	
+    [self presentViewController:activityController
+					   animated:YES completion:nil];
 }
 
 #pragma mark - Movie
