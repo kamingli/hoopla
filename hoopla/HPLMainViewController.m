@@ -144,9 +144,9 @@
 {
 	NSLog(@"Look for Mission One beacon");
 	self.currentMissionBeaconName = @"Mission1";
-	NSString *text = [NSString stringWithFormat:@"You have %d seconds to locate the satellite! Get moving! Go!", MISSION_ONE_TIME];
-	[self sayIt:text];
-	[self startTimer];
+    self.movieURL = [[NSBundle mainBundle] URLForResource:@"movie-mission1" withExtension:@"m4v"];
+    [self playMovie];
+
 }
 
 #pragma mark - Mission Two button
@@ -188,17 +188,18 @@
     [self playMovie];
 }
 
+- (void)startMission1
+{
+	NSString *text = [NSString stringWithFormat:@"You have %d seconds to locate the satellite! Get moving! Go!", MISSION_ONE_TIME];
+	[self sayIt:text];
+	[self startTimer];
+}
+
 - (void)startMission2
 {
 	NSString *text = [NSString stringWithFormat:@"You have %d seconds to find George Clooney. Hurry! Go!", MISSION_TWO_TIME];
 	[self sayIt:text];
 	[self startTimer];
-}
-
-- (void)playMission1Video
-{
-    self.movieURL = [[NSBundle mainBundle] URLForResource:@"movie-mission1" withExtension:@"m4v"];
-    [self playMovie];
 }
 
 #pragma mark - Share button
@@ -325,6 +326,10 @@
             
             [self startMission2];
         }
+        else if ([self.currentMissionBeaconName isEqualToString:@"Mission1"]) {
+            
+            [self startMission1];
+        }
     }];
 }
 
@@ -353,8 +358,6 @@
 			[self sayIt:@"Super, you have located the satellite."];
 			[self resetTimer];
 			[self resetMission];
-            
-            [self performSelector:@selector(playMission1Video) withObject:nil afterDelay:2.5];
 		}
 	} else if ([self.currentMissionBeaconName isEqualToString:@"Mission2"]
                && [visit.transmitter.name isEqualToString:@"Mission2"]) {
