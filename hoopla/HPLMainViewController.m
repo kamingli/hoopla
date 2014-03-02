@@ -18,6 +18,8 @@
 @property (nonatomic, strong) NSString *currentMissionBeaconName;
 @property (nonatomic, strong) NSTimer *countDownTimer;
 @property (nonatomic, assign) NSInteger remainingSeconds;
+@property (nonatomic, strong) AVAudioPlayer *radarAudioPlayer;
+
 @end
 
 @implementation HPLMainViewController
@@ -176,6 +178,27 @@
 	[self startTimer];
 }
 
+#pragma mark - Audio
+
+- (void)startRadarAudio
+{
+    NSURL *url = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/beep_end.mp3", [[NSBundle mainBundle] resourcePath]]];
+	
+	NSError *error;
+    self.radarAudioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+    self.radarAudioPlayer.enableRate = YES;
+	self.radarAudioPlayer.numberOfLoops = -1;
+    self.radarAudioPlayer.rate=0.2;
+    self.radarAudioPlayer.volume=0.1;
+	[self.radarAudioPlayer play];
+}
+
+- (void)stopRadarAudio
+{
+    [self.radarAudioPlayer stop];
+    self.radarAudioPlayer=nil;
+}
+
 #pragma mark - Movie
 
 - (MPMoviePlayerViewController *)moviePlayerViewController
@@ -281,12 +304,15 @@
 {
 	[self.countDownTimer invalidate];
 	self.countDownTimer = nil;
+    [self stopRadarAudio];
 }
 
 - (void)startTimer
 {
 	self.remainingSeconds = [self.currentMissionBeaconName isEqualToString:@"Mission1"] ? MISSION_ONE_TIME : MISSION_TWO_TIME;
 	self.countDownTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countDown) userInfo:nil repeats:YES];
+    
+    [self startRadarAudio];
 }
 
 - (void)countDown
