@@ -9,14 +9,21 @@
 #import "HPLMainViewController.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import "HPLMovieViewController.h"
+#import "AudioToolBox/AudioToolBox.h"
+#import <AVFoundation/AVFoundation.h>
 
 @interface HPLMainViewController ()
 @property (nonatomic, strong) MPMoviePlayerViewController *moviePlayerViewController;
 @property (nonatomic, strong) NSURL *movieURL;
 @property (nonatomic, strong) NSString *currentMissionBeaconName;
+@property (nonatomic, strong) NSTimer *countDownTimer;
+@property (nonatomic, assign) NSInteger remainingSeconds;
 @end
 
 @implementation HPLMainViewController
+
+#define MISSION_ONE_TIME 30
+#define MISSION_TWO_TIME 20
 
 @synthesize playButton = _playButton;
 @synthesize missionOneButton = _missionOneButton;
@@ -36,6 +43,9 @@
 {
     [super viewDidLoad];
 	[self setupMyView];
+	self.visitManager = [FYXVisitManager new];
+    self.visitManager.delegate = self;
+    [self.visitManager start];
 }
 
 - (void)didReceiveMemoryWarning
@@ -51,6 +61,8 @@
 	[self addMissionOneButton];
 	[self addMissionTwoButton];
 	[self.playButton addTarget:self action:@selector(playButtonTapped) forControlEvents:UIControlEventTouchUpInside];
+	[self.missionOneButton addTarget:self action:@selector(missionOneButtonTapped) forControlEvents:UIControlEventTouchUpInside];
+	[self.missionTwoButton addTarget:self action:@selector(missionTwoButtonTapped) forControlEvents:UIControlEventTouchUpInside];
 }
 
 #pragma mark - Play button
@@ -117,9 +129,13 @@
 	return _missionOneButton;
 }
 
-- (void)missionOneButtonTappped
+- (void)missionOneButtonTapped
 {
+	NSLog(@"Look for Mission One beacon");
 	self.currentMissionBeaconName = @"Mission1";
+	NSString *text = [NSString stringWithFormat:@"You have %d seconds to locate the satellite! Get moving! Go!", MISSION_ONE_TIME];
+	[self sayIt:text];
+	[self startTimer];
 }
 
 #pragma mark - Mission Two button
@@ -151,9 +167,13 @@
 	return _missionTwoButton;
 }
 
-- (void)missionTwoButtonTappped
+- (void)missionTwoButtonTapped
 {
+	NSLog(@"Look for Mission Two beacon");
 	self.currentMissionBeaconName = @"Mission2";
+	NSString *text = [NSString stringWithFormat:@"You have %d seconds to find George Clooney. Hurry! Go!", MISSION_TWO_TIME];
+	[self sayIt:text];
+	[self startTimer];
 }
 
 #pragma mark - Movie
@@ -199,6 +219,98 @@
 {
 	_moviePlayerViewController = nil;
 	[self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - Gimbal
+
+- (void)didArrive:(FYXVisit *)visit;
+{
+	// this will be invoked when an authorized transmitter is sighted for the first time
+	NSLog(@"I arrived at a Gimbal Beacon!!! %@", visit.transmitter.name);
+}
+
+- (void)receivedSighting:(FYXVisit *)visit updateTime:(NSDate *)updateTime RSSI:(NSNumber *)RSSI;
+{
+	// this will be invoked when an authorized transmitter is sighted during an on-going visit
+	NSLog(@"I received a sighting!!! %@", visit.transmitter.name);
+	NSLog(@"Beacon name:%@", visit.transmitter.name);
+	NSLog(@"RSSI: %f", RSSI.floatValue);
+	
+	if ([self.currentMissionBeaconName isEqualToString:@"Mission1"]) {
+		if (RSSI.floatValue <= 60.0f) {
+			[self sayIt:@"Super, you have located the satellite."];
+			[self resetTimer];
+			[self resetMission];
+		}
+	} else if ([self.currentMissionBeaconName isEqualToString:@"Mission1"]) {
+		if (RSSI.floatValue <= 60.0f) {
+			[self sayIt:@"Fantastic, you have found George Clooney!"];
+			[self resetTimer];
+			[self resetMission];
+		}
+	}
+}
+
+- (void)didDepart:(FYXVisit *)visit;
+{
+	// this will be invoked when an authorized transmitter has not been sighted for some time
+	NSLog(@"I left the proximity of a Gimbal Beacon!!!! %@", visit.transmitter.name);
+	NSLog(@"I was around the beacon for %f seconds", visit.dwellTime);
+}
+
+- (void)sayIt:(NSString *)textToSpeech
+{
+	if (textToSpeech.length == 0) {
+		return;
+	}
+	
+	if (NSStringFromClass([AVSpeechUtterance class])) {
+		AVSpeechUtterance *utterance = [AVSpeechUtterance speechUtteranceWithString:textToSpeech];
+		utterance.rate = 0.2f;
+		AVSpeechSynthesizer *synth = [[AVSpeechSynthesizer alloc] init];
+		[synth speakUtterance:utterance];
+	} else {
+		// pre iOS7
+		// list of sounds: http://iphonedevwiki.net/index.php/AudioServices
+		AudioServicesPlaySystemSound(1328);
+	}
+}
+
+- (void)resetTimer
+{
+	[self.countDownTimer invalidate];
+	self.countDownTimer = nil;
+}
+
+- (void)startTimer
+{
+	self.remainingSeconds = [self.currentMissionBeaconName isEqualToString:@"Mission1"] ? MISSION_ONE_TIME : MISSION_TWO_TIME;
+	self.countDownTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countDown) userInfo:nil repeats:YES];
+}
+
+- (void)countDown
+{
+	self.remainingSeconds -= 1;
+	if (self.remainingSeconds <= 30) {
+		if (self.remainingSeconds == 20) {
+			[self sayIt:@"20 seconds"];
+		} else if (self.remainingSeconds == 10) {
+			[self sayIt:@"10 seconds"];
+		} else if (self.remainingSeconds == 5) {
+			[self sayIt:@"5 seconds"];
+		}
+	}
+	
+	if (self.remainingSeconds <= 0) {
+		[self sayIt:@"Mission failed. You ran out of oxygen."];
+		[self resetTimer];
+		[self resetMission];
+	}
+}
+
+- (void)resetMission
+{
+	self.currentMissionBeaconName = @"";
 }
 
 @end

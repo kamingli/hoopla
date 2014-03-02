@@ -13,6 +13,7 @@
 		601C287F18C3333800C7A89D /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 601C287E18C3333800C7A89D /* MediaPlayer.framework */; };
 		601C288218C334D500C7A89D /* HPLMovieViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 601C288118C334D500C7A89D /* HPLMovieViewController.m */; };
 		601C288418C33AA400C7A89D /* movie-mission1.m4v in Resources */ = {isa = PBXBuildFile; fileRef = 601C288318C33AA400C7A89D /* movie-mission1.m4v */; };
+		601C288618C3475700C7A89D /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 601C288518C3475700C7A89D /* AudioToolbox.framework */; };
 		60D3D93518C2C17E0064CB69 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60D3D93418C2C17E0064CB69 /* Foundation.framework */; };
 		60D3D93718C2C17E0064CB69 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60D3D93618C2C17E0064CB69 /* CoreGraphics.framework */; };
 		60D3D93918C2C17E0064CB69 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60D3D93818C2C17E0064CB69 /* UIKit.framework */; };
@@ -62,6 +63,7 @@
 		601C288018C334D500C7A89D /* HPLMovieViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPLMovieViewController.h; sourceTree = "<group>"; };
 		601C288118C334D500C7A89D /* HPLMovieViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPLMovieViewController.m; sourceTree = "<group>"; };
 		601C288318C33AA400C7A89D /* movie-mission1.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = "movie-mission1.m4v"; sourceTree = "<group>"; };
+		601C288518C3475700C7A89D /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		60D3D93118C2C17E0064CB69 /* hoopla.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = hoopla.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		60D3D93418C2C17E0064CB69 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		60D3D93618C2C17E0064CB69 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -102,6 +104,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				601C288618C3475700C7A89D /* AudioToolbox.framework in Frameworks */,
 				601C287F18C3333800C7A89D /* MediaPlayer.framework in Frameworks */,
 				60D3D9B018C30DF20064CB69 /* CoreLocation.framework in Frameworks */,
 				60D3D9CC18C326280064CB69 /* NetworkServices.framework in Frameworks */,
@@ -173,6 +176,7 @@
 		60D3D93318C2C17E0064CB69 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				601C288518C3475700C7A89D /* AudioToolbox.framework */,
 				601C287E18C3333800C7A89D /* MediaPlayer.framework */,
 				60D3D9AF18C30DF20064CB69 /* CoreLocation.framework */,
 				60D3D98718C30AB90064CB69 /* CoreData.framework */,

@@ -7,9 +7,13 @@
 //
 
 #import "HPLViewController.h"
+#import <FYX/FYX.h>
+#import <FYX/FYXVisitManager.h>
+#import <FYX/FYXTransmitter.h>
 
-@interface HPLMainViewController : HPLViewController
+@interface HPLMainViewController : HPLViewController <FYXVisitDelegate>
 @property (nonatomic, strong, readonly) UIButton *playButton;
 @property (nonatomic, strong, readonly) UIButton *missionOneButton;
 @property (nonatomic, strong, readonly) UIButton *missionTwoButton;
+@property (nonatomic) FYXVisitManager *visitManager;
 @end

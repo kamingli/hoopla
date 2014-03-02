@@ -74,25 +74,25 @@
 	NSLog(@"%@", error);
 }
 
-- (void)didArrive:(FYXVisit *)visit;
-{
-	// this will be invoked when an authorized transmitter is sighted for the first time
-	NSLog(@"I arrived at a Gimbal Beacon!!! %@", visit.transmitter.name);
-}
-
-- (void)receivedSighting:(FYXVisit *)visit updateTime:(NSDate *)updateTime RSSI:(NSNumber *)RSSI;
-{
-	// this will be invoked when an authorized transmitter is sighted during an on-going visit
-	NSLog(@"I received a sighting!!! %@", visit.transmitter.name);
-	NSLog(@"Beacon name:%@", visit.transmitter.name);
-	NSLog(@"RSSI: %f", RSSI.floatValue);
-}
-
-- (void)didDepart:(FYXVisit *)visit;
-{
-	// this will be invoked when an authorized transmitter has not been sighted for some time
-	NSLog(@"I left the proximity of a Gimbal Beacon!!!! %@", visit.transmitter.name);
-	NSLog(@"I was around the beacon for %f seconds", visit.dwellTime);
-}
+//- (void)didArrive:(FYXVisit *)visit;
+//{
+//	// this will be invoked when an authorized transmitter is sighted for the first time
+//	NSLog(@"I arrived at a Gimbal Beacon!!! %@", visit.transmitter.name);
+//}
+//
+//- (void)receivedSighting:(FYXVisit *)visit updateTime:(NSDate *)updateTime RSSI:(NSNumber *)RSSI;
+//{
+//	// this will be invoked when an authorized transmitter is sighted during an on-going visit
+//	NSLog(@"I received a sighting!!! %@", visit.transmitter.name);
+//	NSLog(@"Beacon name:%@", visit.transmitter.name);
+//	NSLog(@"RSSI: %f", RSSI.floatValue);
+//}
+//
+//- (void)didDepart:(FYXVisit *)visit;
+//{
+//	// this will be invoked when an authorized transmitter has not been sighted for some time
+//	NSLog(@"I left the proximity of a Gimbal Beacon!!!! %@", visit.transmitter.name);
+//	NSLog(@"I was around the beacon for %f seconds", visit.dwellTime);
+//}
 
 @end
