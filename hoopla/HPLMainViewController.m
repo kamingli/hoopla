@@ -245,23 +245,23 @@
 
 - (void)setRateAndVolume:(float)rate volume:(float)volume
 {
-    if (self.radarAudioPlayer.rate==rate)
-    {
-        NSLog(@"Rate is the same");
-        return;
-    }
+//    if (self.radarAudioPlayer.rate==rate)
+//    {
+//        NSLog(@"Rate is the same");
+//        return;
+//    }
     
     self.radarAudioPlayer.rate=rate;
-    self.radarAudioPlayer.volume=0.8;
+    self.radarAudioPlayer.volume=0.1;
 }
 
 - (void)updateRateAndVolume:(NSNumber *)RSSI
 {
     if (RSSI.floatValue >= -60.0f)
         [self setRateAndVolume:2.0 volume:1.0];
-    else if (RSSI.floatValue >= -75.0f && RSSI.floatValue < -60.0f)
+    else if (RSSI.floatValue >= -70.0f && RSSI.floatValue < -60.0f)
         [self setRateAndVolume:1.0 volume:1.0];
-    else if (RSSI.floatValue < -75.0f)
+    else if (RSSI.floatValue < -70.0f)
         [self setRateAndVolume:0.2 volume:1.0];
 }
 
@@ -326,7 +326,8 @@
 	NSLog(@"RSSI: %f", RSSI.floatValue);
 	NSLog(@"update time: %@", updateTime);
     
-	if ([self.currentMissionBeaconName isEqualToString:@"Mission1"]){
+	if ([self.currentMissionBeaconName isEqualToString:@"Mission1"]
+        && [visit.transmitter.name isEqualToString:@"Mission1"]){
         [self updateRateAndVolume:RSSI];
         
 		if (RSSI.floatValue >= -55.0f) {
@@ -334,7 +335,8 @@
 			[self resetTimer];
 			[self resetMission];
 		}
-	} else if ([self.currentMissionBeaconName isEqualToString:@"Mission2"]) {
+	} else if ([self.currentMissionBeaconName isEqualToString:@"Mission2"]
+               && [visit.transmitter.name isEqualToString:@"Mission2"]) {
         [self updateRateAndVolume:RSSI];
         
 		if (RSSI.floatValue >= -55.0f) {
