@@ -77,7 +77,8 @@
 {
 	// this will be invoked when an authorized transmitter is sighted during an on-going visit
 	NSLog(@"I received a sighting!!! %@", visit.transmitter.name);
-	NSLog(@"%@", visit.transmitter.name);
+	NSLog(@"Beacon name:%@", visit.transmitter.name);
+	NSLog(@"RSSI: %f", RSSI.floatValue);
 }
 
 - (void)didDepart:(FYXVisit *)visit;
