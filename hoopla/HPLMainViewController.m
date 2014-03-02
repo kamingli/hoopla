@@ -235,15 +235,16 @@
 	NSLog(@"I received a sighting!!! %@", visit.transmitter.name);
 	NSLog(@"Beacon name:%@", visit.transmitter.name);
 	NSLog(@"RSSI: %f", RSSI.floatValue);
+	NSLog(@"update time: %@", updateTime);
 	
 	if ([self.currentMissionBeaconName isEqualToString:@"Mission1"]) {
-		if (RSSI.floatValue <= 60.0f) {
+		if (RSSI.floatValue >= -55.0f) {
 			[self sayIt:@"Super, you have located the satellite."];
 			[self resetTimer];
 			[self resetMission];
 		}
-	} else if ([self.currentMissionBeaconName isEqualToString:@"Mission1"]) {
-		if (RSSI.floatValue <= 60.0f) {
+	} else if ([self.currentMissionBeaconName isEqualToString:@"Mission2"]) {
+		if (RSSI.floatValue >= -55.0f) {
 			[self sayIt:@"Fantastic, you have found George Clooney!"];
 			[self resetTimer];
 			[self resetMission];
